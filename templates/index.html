@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Finite Automata Firewall Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function fetchLogs() {
+            fetch('/logs')
+                .then(response => response.json())
+                .then(data => {
+                    const logTable = document.getElementById("logTable");
+                    logTable.innerHTML = "";
+                    data.reverse().forEach(log => {
+                        const row = `<tr>
+                            <td>${log.proto}</td>
+                            <td>${log.src}</td>
+                            <td>${log.dst}</td>
+                            <td>${log.status}</td>
+                            <td>${log.payload}</td>
+                        </tr>`;
+                        logTable.innerHTML += row;
+                    });
+                });
+        }
+        setInterval(fetchLogs, 2000);
+    </script>
+</head>
+<body>
+    <h1>Finite Automata Firewall Dashboard</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Protocol</th>
+                <th>Source IP</th>
+                <th>Destination IP</th>
+                <th>Status</th>
+                <th>Payload (Preview)</th>
+            </tr>
+        </thead>
+        <tbody id="logTable">
+        </tbody>
+    </table>
+</body>
+</html>
