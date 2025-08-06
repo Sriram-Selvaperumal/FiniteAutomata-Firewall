@@ -27,6 +27,32 @@
 </head>
 <body>
     <h1>Finite Automata Firewall Dashboard</h1>
+    <div>
+    <input type="text" id="ipInput" placeholder="Enter IP to Block/Unblock">
+    <button onclick="blockIP()">Block IP</button>
+    <button onclick="unblockIP()">Unblock IP</button>
+</div>
+
+<script>
+function blockIP() {
+    const ip = document.getElementById("ipInput").value;
+    fetch('/block_ip', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ip: ip })
+    }).then(response => response.json()).then(data => alert(data.message));
+}
+
+function unblockIP() {
+    const ip = document.getElementById("ipInput").value;
+    fetch('/unblock_ip', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ip: ip })
+    }).then(response => response.json()).then(data => alert(data.message));
+}
+</script>
+
     <table>
         <thead>
             <tr>
