@@ -20,22 +20,22 @@ def packet_callback(packet):
         if Raw in packet:
             payload = packet[Raw].load.decode(errors="ignore")
 
-            # Determine Status
+            
             if ip_src in blocked_ips or ip_dst in blocked_ips:
                 status = "BLOCKED"
 
             elif payload.strip() != "":
                 if ip_src.startswith("192.168.") or ip_src.startswith("10."):
-                    # Outgoing Request -> Validate with Automata
+                    
                     is_valid = is_valid_http_request(payload)
                     status = "ALLOWED" if is_valid else "BLOCKED"
                 else:
-                    # Incoming Response -> Always Allow
+                   
                     status = "ALLOWED"
             else:
                 status = "ALLOWED"
 
-            # Always log the packet
+            
             log_entry = {
                 "proto": proto,
                 "src": ip_src,
